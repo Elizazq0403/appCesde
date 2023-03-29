@@ -38,9 +38,32 @@ export default function App() {
         placeholder='Observación:'
         style={styles.textInput}
       />
-      <StatusBar style="auto" />
+
+      <View style={[styles.container, {marginTop: 30, flexDirection: "row"}]}
+      >    
+        <TouchableOpacity
+            style={[{ backgroundColor: "green" }, styles.buttons]}
+        >
+          <Text style={styles.textButtons}>GUARDAR</Text>
+        </TouchableOpacity>  
+        <TouchableOpacity
+            style={[{ backgroundColor: "green" }, styles.buttons]}
+        >
+          <Text style={styles.textButtons}>LIMPIAR</Text>
+        </TouchableOpacity>
+        
+      </View>
+      <View style={[styles.container, {marginTop: 20, flexDirection: "row"}]}
+      >    
+        <TouchableOpacity
+            style={[{ backgroundColor: "green" }, styles.buttons]}
+        >
+          <Text style={styles.textButtons}>BUSCAR</Text>
+        </TouchableOpacity>  
+
+        
+      </View>
     </View>
-    
 
     
   );
@@ -49,7 +72,7 @@ export default function App() {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    width: "100%",
     backgroundColor: '#e31c79',
     alignItems: 'center',
     justifyContent: 'center',
@@ -79,10 +102,19 @@ const styles = StyleSheet.create({
   buttons:{
     borderRadius: 30,
     padding: 5,
-    width: '40%',
+    width: '30%',
+    height: 40,
     justifyContent: "center",
     alignItems: "center",
-    borderColor: '#ffff',
+    borderWidth: 1,
+    borderColor: '#fff',
     backgroundColor: '#6f7074',
-  }
+    marginTop:"center",
+    marginLeft: 5,
+    
+  },
+  textButtons: {
+    color: '#fff',
+    fontWeight: "bold",
+  },
 });
