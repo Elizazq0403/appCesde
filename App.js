@@ -1,7 +1,45 @@
-import { StatusBar } from 'expo-status-bar';
+
+import { useState } from "react";
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, } from 'react-native';
 
 export default function App() {
+
+  // Definir las variables de estado del componente
+
+  const [identificacion, setidentificacion] = useState('');
+  const [nombres, setnombres] = useState('');
+  const [asignatura, setasignatura] = useState('');
+  const [nota1, setnota1] = useState('');
+  const [nota2, setnota2] = useState('');
+  const [nota3, setnota3] = useState('');
+  const [definitiva, setdefinitiva] = useState('');
+  const [observacion, setobservacion] = useState('');
+
+  // Metodos o funciones
+
+  let estudiantes = [];
+
+//llenando el json con clave: valor
+    estudiantes.push({
+
+    identificacion:identificacion,
+    nombres: nombres,
+    asignatura: asignatura,
+    notas: [nota1, nota2, nota3],
+    definitiva: definitiva,  
+    observacion: observacion
+
+})
+
+//calcular la nota promedio
+function calcular(){
+  definitiva = parseFloat(nota1) + parseFloat(nota2) + parseFloat(nota3) / 3.0;
+}
+
+if(definitiva<2){
+ 
+}
+
   return (
     <View style={styles.container}>
       <Text style={styles.titulo}>CESDE</Text>
@@ -9,34 +47,50 @@ export default function App() {
       <TextInput
         placeholder='Identificación:'
         style={styles.textInput}
+        onChangeText={identificacion=> setidentificacion(identificacion)}
+        value={identificacion}
       />
       <TextInput
         placeholder='Nombres:'
         style={styles.textInput}
+        onChangeText={nombres=> setnombres(nombres)}
+        value={nombres}
       />
       <TextInput
         placeholder='Asignatura:'
         style={styles.textInput}
+        onChangeText={asignatura=> setasignatura(asignatura)}
+        value={asignatura}
       />
       <TextInput
         placeholder='Nota 1 (30%):'
         style={styles.textInput}
+        onChangeText={nota1=> setnota1(nota1)}
+        value={nota1}
       />
       <TextInput
         placeholder='Nota 2 (35%):'
         style={styles.textInput}
+        onChangeText={nota2=> setnota2(nota2)}
+        value={nota2}
       />
       <TextInput
         placeholder='Nota 3 (35%):'
         style={styles.textInput}
+        onChangeText={nota3=> setnota3(nota3)}
+        value={nota3}
       />
       <TextInput
         placeholder='Definitiva:'
         style={styles.textInput}
+        onChangeText={definitiva=> setdefinitiva(definitiva)}
+        value={definitiva}
       />
       <TextInput
         placeholder='Observación:'
         style={styles.textInput}
+        onChangeText={observacion=> setobservacion(observacion)}
+        value={observacion}
       />
 
       <View style={[styles.container, {marginTop: 30, flexDirection: "row"}]}
