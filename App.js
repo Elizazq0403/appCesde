@@ -4,41 +4,69 @@ import { StyleSheet, Text, View, TextInput, TouchableOpacity, } from 'react-nati
 
 export default function App() {
 
-  // Definir las variables de estado del componente
+  let estudiantes=[]
 
-  const [identificacion, setidentificacion] = useState('');
-  const [nombres, setnombres] = useState('');
-  const [asignatura, setasignatura] = useState('');
-  const [nota1, setnota1] = useState('');
-  const [nota2, setnota2] = useState('');
-  const [nota3, setnota3] = useState('');
-  const [definitiva, setdefinitiva] = useState('');
-  const [observacion, setobservacion] = useState('');
 
-  // Metodos o funciones
-
-  let estudiantes = [];
-
-//llenando el json con clave: valor
-    estudiantes.push({
-
+  let estudiante = {
     identificacion:identificacion,
     nombres: nombres,
     asignatura: asignatura,
-    notas: [nota1, nota2, nota3],
-    definitiva: definitiva,  
-    observacion: observacion
+    nota1: nota1, 
+    nota2: nota2, 
+    nota3: nota3,
+  };
 
-})
+  //Agregar estudiante al arreglo de objetos
+      estudiantes.push(estudiante)
+  
 
+  // Definir las variables de estado del componente
+
+  const [identificacion, setidentificacion] = useState(39167637);//estudiante.identificacion
+  const [nombres, setnombres] = useState(estudiante.nombres);//'cristina'
+  const [asignatura, setasignatura] = useState(estudiante.asignatura);//'matematicas'
+  const [nota1, setnota1] = useState(estudiante.nota1);//3
+  const [nota2, setnota2] = useState(estudiante.nota2);//5
+  const [nota3, setnota3] = useState(estudiante.nota3);//4.5
+  const [definitiva, setdefinitiva] = useState('');
+  const [observacion, setobservacion] = useState('');
+
+  console.log(estudiante)
+
+
+  //setState (setidentificacion por ejemplo, capturamos lo que ingresemos en el input)
+
+  //Eventos
+
+  
+
+
+  // Metodos o funciones
+
+//Guardar(enviar)
+
+const agregar=()=>{
+
+  setidentificacion([...identificacion, identificacion])
+  setnombres ([...nombres, nombres])
+  setasignatura ([...asignatura, asignatura])
+  setnota1 ([...nota1, nota1])
+  setnota2 ([...nota2, nota2])
+  setnota3 ([...nota3, nota3])
+
+
+//if(identificacion == "" || nombres == "" || asignatura == "" || nota1 == "" || nota2 == "" || nota3 == "") 
+
+}
 //calcular la nota promedio
-function calcular(){
-  definitiva = parseFloat(nota1) + parseFloat(nota2) + parseFloat(nota3) / 3.0;
+function calcularNota(nota1, nota2, nota3){
+  return parseFloat(nota1) + parseFloat(nota2) + parseFloat(nota3) / 3.0;
 }
+/*function Observacion(notaFinal){
+  if notaFinal < 2
 
-if(definitiva<2){
- 
-}
+}*/
+
 
   return (
     <View style={styles.container}>
@@ -80,23 +108,22 @@ if(definitiva<2){
         onChangeText={nota3=> setnota3(nota3)}
         value={nota3}
       />
-      <TextInput
-        placeholder='Definitiva:'
+      <Text
         style={styles.textInput}
-        onChangeText={definitiva=> setdefinitiva(definitiva)}
         value={definitiva}
       />
-      <TextInput
-        placeholder='Observación:'
+      <Text
         style={styles.textInput}
-        onChangeText={observacion=> setobservacion(observacion)}
         value={observacion}
       />
+      <Text style={styles.textMessage}>{observacion}</Text>
+
 
       <View style={[styles.container, {marginTop: 30, flexDirection: "row"}]}
       >    
         <TouchableOpacity
             style={[{ backgroundColor: "green" }, styles.buttons]}
+            onPress={agregar}
         >
           <Text style={styles.textButtons}>GUARDAR</Text>
         </TouchableOpacity>  
@@ -171,4 +198,11 @@ const styles = StyleSheet.create({
     color: '#fff',
     fontWeight: "bold",
   },
+
+  textMessage: {
+    color: '#000',
+    fontWeight: "bold",
+  },
+
+  
 });
