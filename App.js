@@ -2,70 +2,137 @@
 import { useState } from "react";
 import { StyleSheet, Text, View, TextInput, TouchableOpacity, } from 'react-native';
 
+let notas=[]
+
+
 export default function App() {
 
-  let estudiantes=[]
 
-
-  let estudiante = {
-    identificacion:identificacion,
-    nombres: nombres,
-    asignatura: asignatura,
-    nota1: nota1, 
-    nota2: nota2, 
-    nota3: nota3,
-  };
-
-  //Agregar estudiante al arreglo de objetos
-      estudiantes.push(estudiante)
-  
 
   // Definir las variables de estado del componente
 
-  const [identificacion, setidentificacion] = useState(39167637);//estudiante.identificacion
-  const [nombres, setnombres] = useState(estudiante.nombres);//'cristina'
-  const [asignatura, setasignatura] = useState(estudiante.asignatura);//'matematicas'
-  const [nota1, setnota1] = useState(estudiante.nota1);//3
-  const [nota2, setnota2] = useState(estudiante.nota2);//5
-  const [nota3, setnota3] = useState(estudiante.nota3);//4.5
-  const [definitiva, setdefinitiva] = useState('');
-  const [observacion, setobservacion] = useState('');
+  const [identificacion, setIdentificacion] = useState('')
+  const [nombres, setNombres] = useState('')
+  const [asignatura, setAsignatura] = useState('')
+  const [nota1, setNota1] = useState('');
+  const [nota2, setNota2] = useState('');
+  const [nota3, setNota3] = useState('');
+  const [definitiva, setDefinitiva] = useState('');
+  const [observacion, setObservacion] = useState('');
+  const [esValido, setEsValido] = useState('');
+  const[mensaje, setMensaje] = useState('');
 
-  console.log(estudiante)
+
+
 
 
   //setState (setidentificacion por ejemplo, capturamos lo que ingresemos en el input)
-
-  //Eventos
-
-  
-
 
   // Metodos o funciones
 
 //Guardar(enviar)
 
-const agregar=()=>{
+function valCampos(){
 
-  setidentificacion([...identificacion, identificacion])
-  setnombres ([...nombres, nombres])
-  setasignatura ([...asignatura, asignatura])
-  setnota1 ([...nota1, nota1])
-  setnota2 ([...nota2, nota2])
-  setnota3 ([...nota3, nota3])
-
-
-//if(identificacion == "" || nombres == "" || asignatura == "" || nota1 == "" || nota2 == "" || nota3 == "") 
-
+  if(identificacion === "" || nombres === "" || asignatura === "" || nota1 === "" || nota2 === "" || nota3 === ""){
+    return false
+  }else{
+    return true
+  } 
 }
-//calcular la nota promedio
-function calcularNota(nota1, nota2, nota3){
-  return parseFloat(nota1) + parseFloat(nota2) + parseFloat(nota3) / 3.0;
-}
-/*function Observacion(notaFinal){
-  if notaFinal < 2
 
-}*/
+function valValores(){
+  let n1 = parseFloat(nota1)
+  let n2 = parseFloat(nota2)
+  let n3 = parseFloat(nota3)
+  
+  if(n1 >= 0 && n1 <= 5){
+    if(n2 >= 0 && n2 <= 5){
+      if(n3 >= 0 && n3 <= 5){
+        return true
+      }else{
+        return false
+      }
+    }else{
+      return false
+    }
+  }else{
+    return false
+  }
+}
+
+  let calcular = () =>{
+    let ob = ''
+    let resValCam = valCampos()
+    let resValVal = valValores()
+    let resultado = (parseFloat(nota1) * 0.3) + (parseFloat(nota2) * 0.35) + (parseFloat(nota3) * 0.35)
+    if(resValCam){
+      if(resValVal){
+        setEsValido(true);
+        setMensaje('')
+        if(resultado < 2){
+          setDefinitiva(resultado);
+          setObservacion('El estudiantte reprueba');
+          ob = 'Reprueba'
+        }else if(resultado >= 2 && resultado < 3){
+          setDefinitiva(resultado);
+          setObservacion('El estudiante habilita');
+          setEsValido(false)
+          ob = 'El estudinte aprueba'
+        }else if(resultado >= 3 && resultado <= 5){
+          setDefinitiva(resultado);
+          setObservacion('Aprueba');
+          ob = 'Aprueba'
+        }
+        setEsValido(true)
+        setMensaje('Estudiante Ingresado')
+        notas.push({identificacion:identificacion,nombres:nombres,asignatura:asignatura,nota1:nota1,nota2:nota2,nota3:nota3,definitiva:resultado.toString(),observacion:ob})
+        console.log(notas)
+      }else{
+        setEsValido(false);
+        setMensaje('Se deben ingresar notas entre 0 y 5')
+      }
+    }else{
+      setEsValido(false)
+      setMensaje('Se deben ingresar todos los campos')
+    }
+  }
+
+    let limpiar = () =>{
+      setIdentificacion('')
+      setNombres('')
+      setAsignatura('')
+      setNota1('')
+      setNota2('')
+      setNota3('')
+      setDefinitiva('')
+      setObservacion('')
+      setMensaje('')
+    }
+
+    let buscarAlumno = () =>{
+      let ident = identificacion
+      const notaFind = notas.find(idFind => idFind.identificacion === ident)
+      if(ident === ""){
+        setEsValido(false)
+        setMensaje('Ingresa una identificacion')
+      }else{
+        if(notaFind != undefined){
+          //console.log(notaFind)
+          setNombres(notaFind.nombres)
+          setAsignatura(notaFind.asignatura)
+          setNota1(notaFind.nota1)
+          setNota2(notaFind.nota2)
+          setNota3(notaFind.nota3)
+          setDefinitiva(notaFind.definitiva)
+        }else{
+          setEsValido(false)
+          setMensaje('No existe identificacion')
+        }
+      }
+    
+    }
+
 
 
   return (
@@ -75,62 +142,71 @@ function calcularNota(nota1, nota2, nota3){
       <TextInput
         placeholder='Identificación:'
         style={styles.textInput}
-        onChangeText={identificacion=> setidentificacion(identificacion)}
+        onChangeText={(identificacion)=> setIdentificacion(identificacion)}
         value={identificacion}
       />
       <TextInput
         placeholder='Nombres:'
         style={styles.textInput}
-        onChangeText={nombres=> setnombres(nombres)}
+        onChangeText={(nombres)=> setNombres(nombres)}
         value={nombres}
       />
       <TextInput
         placeholder='Asignatura:'
         style={styles.textInput}
-        onChangeText={asignatura=> setasignatura(asignatura)}
+        onChangeText={(asignatura)=> setAsignatura(asignatura)}
         value={asignatura}
       />
       <TextInput
         placeholder='Nota 1 (30%):'
         style={styles.textInput}
-        onChangeText={nota1=> setnota1(nota1)}
+        onChangeText={(nota1)=> setNota1(nota1)}
         value={nota1}
       />
       <TextInput
         placeholder='Nota 2 (35%):'
         style={styles.textInput}
-        onChangeText={nota2=> setnota2(nota2)}
+        onChangeText={(nota2)=> setNota2(nota2)}
         value={nota2}
       />
       <TextInput
         placeholder='Nota 3 (35%):'
         style={styles.textInput}
-        onChangeText={nota3=> setnota3(nota3)}
+        onChangeText={(nota3)=> setNota3(nota3)}
         value={nota3}
       />
-      <Text
+      <TextInput
+        placeholder='Definitiva:'
+        editable={false}      
         style={styles.textInput}
+        onChangeText={(definitiva) => setDefinitiva(definitiva)}
         value={definitiva}
       />
-      <Text
+      <TextInput
+        placeholder='Observación:'
+        editable={false}
         style={styles.textInput}
+        onChangeText={(observacion) => setObservacion(observacion)}
         value={observacion}
       />
-      <Text style={styles.textMessage}>{observacion}</Text>
+      <Text style={styles.textMessage}>{mensaje}</Text>
 
 
       <View style={[styles.container, {marginTop: 30, flexDirection: "row"}]}
       >    
         <TouchableOpacity
             style={[{ backgroundColor: "green" }, styles.buttons]}
-            onPress={agregar}
+            onPress= {() => calcular()}
         >
           <Text style={styles.textButtons}>GUARDAR</Text>
+
         </TouchableOpacity>  
         <TouchableOpacity
             style={[{ backgroundColor: "green" }, styles.buttons]}
+            onPress={() => limpiar()}
         >
           <Text style={styles.textButtons}>LIMPIAR</Text>
+          
         </TouchableOpacity>
         
       </View>
@@ -138,8 +214,10 @@ function calcularNota(nota1, nota2, nota3){
       >    
         <TouchableOpacity
             style={[{ backgroundColor: "green" }, styles.buttons]}
+            onPress={() => buscarAlumno()}
         >
           <Text style={styles.textButtons}>BUSCAR</Text>
+          
         </TouchableOpacity>  
 
         
